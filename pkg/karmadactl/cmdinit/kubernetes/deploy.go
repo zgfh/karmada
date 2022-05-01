@@ -400,7 +400,8 @@ func (i *CommandInitOption) RunInit(_ io.Writer, parentCommand string) error {
 
 	// Create karmada kubeconfig
 	serverURL := fmt.Sprintf("https://%s:%v", i.KarmadaAPIServerIP[0].String(), i.KarmadaAPIServerNodePort)
-	if err := utils.WriteKubeConfigFromSpec(serverURL, options.UserName, options.ClusterName, i.KarmadaDataPath, options.KarmadaKubeConfigName,
+	fullUserName := fmt.Sprintf("%s-%s", options.ClusterName, options.UserName)
+	if err := utils.WriteKubeConfigFromSpec(serverURL, fullUserName, options.ClusterName, i.KarmadaDataPath, options.KarmadaKubeConfigName,
 		i.CertAndKeyFileData[fmt.Sprintf("%s.crt", options.CaCertAndKeyName)], i.CertAndKeyFileData[fmt.Sprintf("%s.key", options.KarmadaCertAndKeyName)],
 		i.CertAndKeyFileData[fmt.Sprintf("%s.crt", options.KarmadaCertAndKeyName)]); err != nil {
 		return fmt.Errorf("failed to create karmada kubeconfig file. %v", err)
